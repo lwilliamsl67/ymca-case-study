@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YMCA of Saginaw — UX Research Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #141210;
+  --paper: #f4efe6;
+  --cream: #ebe4d3;
+  --rust: #bf420d;
+  --teal: #1a7a8a;
+  --teal-light: #29a0b4;
+  --gold: #b8943f;
+  --muted: #7a6f61;
+  --divider: #d2cbb9;
+}
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── HERO ── */
+header {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--divider);
+}
+.header-left {
+  padding: 4.5rem 3.5rem 4.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--divider);
+}
+.header-right {
+  background: var(--ink);
+  padding: 4.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+}
+.header-right::before {
+  content: '';
+  position: absolute;
+  top: -15%; right: -10%;
+  width: 550px; height: 550px;
+  background: radial-gradient(circle, rgba(26,122,138,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.nav-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-top: 3rem;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0.75rem 0 0.6rem;
+}
+.byline {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+.header-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  border-top: 1px solid var(--divider);
+  padding-top: 2rem;
+}
+.meta-item label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.meta-item span { font-size: 0.82rem; }
+
+/* Hero right */
+.big-Y {
+  font-family: 'Playfair Display', serif;
+  font-size: 14rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  position: absolute;
+  top: 2rem; right: 1rem;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+}
+.hero-overview {
+  position: relative;
+  z-index: 1;
+}
+.overview-text {
+  color: rgba(244,239,230,0.7);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  max-width: 400px;
+  margin-bottom: 2.5rem;
+}
+.tag-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 2.5rem; }
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.32rem 0.75rem;
+  border: 1px solid rgba(244,239,230,0.15);
+  color: rgba(244,239,230,0.38);
+  border-radius: 2px;
+}
+.tag.on { border-color: var(--teal); color: var(--teal-light); }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.07);
+  position: relative; z-index: 1;
+}
+.hstat { padding: 1.2rem 1rem; background: rgba(255,255,255,0.02); text-align: center; }
+.hstat .v {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--teal-light);
+  line-height: 1; display: block;
+}
+.hstat .l {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(244,239,230,0.32);
+  display: block; margin-top: 0.3rem;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes up { from { opacity:0; transform:translateY(35px); } to { opacity:1; transform:translateY(0); } }
+.header-left > * { animation: up 0.8s ease forwards; opacity:0; }
+.header-left > *:nth-child(1){animation-delay:.1s}
+.header-left > *:nth-child(2){animation-delay:.25s}
+.header-left > *:nth-child(3){animation-delay:.4s}
+.header-left > *:nth-child(4){animation-delay:.5s}
+.header-right > * { animation: up 0.8s ease forwards; opacity:0; }
+.header-right > *:nth-child(1){animation-delay:.6s}
+.header-right > *:nth-child(2){animation-delay:.7s}
+.header-right > *:nth-child(3){animation-delay:.8s}
+.header-right > *:nth-child(4){animation-delay:.9s}
+
+/* ── LAYOUT ── */
+main { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
+section {
+  padding: 5.5rem 0;
+  border-bottom: 1px solid var(--divider);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+
+.sec-head {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3.5rem;
+}
+.sec-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 400; font-style: italic;
+  color: var(--divider); line-height: 1; padding-top: 0.2rem;
+}
+.sec-t h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 700; line-height: 1.2; margin-bottom: 0.35rem;
+}
+.sec-t p { color: var(--muted); font-size: 0.85rem; }
+.sec-body { padding-left: calc(100px + 2.5rem); }
+
+/* ── SITE PREVIEW STRIP ── */
+.site-strip {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1px;
+  background: var(--divider);
+  border: 1px solid var(--divider);
+  margin-bottom: 2.5rem;
+}
+.site-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #e8e3d8;
+}
+.site-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.4s ease;
+  min-height: 200px;
+}
+.site-img-wrap:hover img { transform: scale(1.03); }
+.site-img-wrap .caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(20,18,16,0.75));
+  padding: 1.25rem 1rem 0.75rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(244,239,230,0.7);
+}
+.site-img-wrap.tall { grid-row: span 2; }
+
+/* ── FINDING ROWS ── */
+.findings-wrap { display: flex; flex-direction: column; gap: 2px; }
+.finding-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr;
+  background: var(--divider);
+  gap: 1px;
+}
+.f-label {
+  background: var(--ink);
+  padding: 2rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.f-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.15em;
+  color: rgba(244,239,230,0.25); text-transform: uppercase;
+}
+.sdot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--rust); display: inline-block;
+  margin-right: 0.35rem; box-shadow: 0 0 7px var(--rust);
+}
+.f-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; color: var(--paper); line-height: 1.3;
+}
+.f-data { background: var(--paper); padding: 2rem; }
+.f-evidence { background: var(--cream); padding: 2rem; }
+.f-metric { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 1rem; }
+.mval {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 700;
+  color: var(--rust); line-height: 1;
+}
+.mdesc { font-size: 0.78rem; color: var(--muted); max-width: 200px; line-height: 1.45; }
+.bullets { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.bullets li {
+  font-size: 0.8rem; color: var(--muted);
+  padding-left: 1.1rem; position: relative; line-height: 1.5;
+}
+.bullets li::before { content: '→'; position: absolute; left: 0; color: var(--rust); font-size: 0.68rem; }
+.quote-block { margin-top: 1rem; }
+.qt {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 0.9rem;
+  line-height: 1.6; color: var(--ink);
+  border-left: 2px solid var(--teal);
+  padding-left: 0.85rem; margin-bottom: 0.4rem;
+}
+.qa {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ── RESULTS GRID ── */
+.results-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--divider); border: 1px solid var(--divider);
+}
+.res-card { background: var(--paper); padding: 2rem; }
+.res-rate {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 0.4rem;
+}
+.res-rate.lo { color: var(--rust); }
+.res-rate.hi { color: var(--teal); }
+.res-card h3 { font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-bottom: 0.4rem; }
+.res-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+.badge {
+  display: inline-block; margin-top: 0.85rem;
+  font-family: 'DM Mono', monospace; font-size: 0.56rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.28rem 0.65rem; border-radius: 2px;
+}
+.badge.fail { background: rgba(191,66,13,0.08); color: var(--rust); border: 1px solid rgba(191,66,13,0.22); }
+.badge.pass { background: rgba(26,122,138,0.08); color: var(--teal); border: 1px solid rgba(26,122,138,0.22); }
+
+/* ── BEFORE / AFTER ── */
+.ba-pair {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--divider); border: 1px solid var(--divider);
+  margin-bottom: 2rem;
+}
+.ba-side { padding: 0; overflow: hidden; }
+.ba-side.dark { background: var(--ink); }
+.ba-header {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid var(--divider);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.ba-side.dark .ba-header { border-bottom-color: rgba(255,255,255,0.08); }
+.ba-badge {
+  font-family: 'DM Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.25rem 0.6rem; border-radius: 2px;
+  flex-shrink: 0;
+}
+.ba-badge.b { background: rgba(191,66,13,0.1); color: var(--rust); border: 1px solid rgba(191,66,13,0.2); }
+.ba-badge.a { background: rgba(26,122,138,0.12); color: var(--teal-light); border: 1px solid rgba(26,122,138,0.28); }
+.ba-header h3 { font-family: 'Playfair Display', serif; font-size: 0.95rem; line-height: 1.3; }
+.ba-side.dark .ba-header h3 { color: var(--paper); }
+.ba-img {
+  width: 100%; display: block;
+  border-bottom: 1px solid var(--divider);
+  max-height: 220px;
+  object-fit: cover; object-position: top;
+}
+.ba-body { padding: 1.5rem 1.75rem; }
+.ba-body p { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+.ba-side.dark .ba-body p { color: rgba(244,239,230,0.55); }
+.ba-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.85rem; }
+.ba-list li { font-size: 0.8rem; padding-left: 1.1rem; position: relative; line-height: 1.5; }
+.ba-side.dark .ba-list li { color: rgba(244,239,230,0.6); }
+.ba-list li::before { content: '·'; position: absolute; left: 0; color: var(--teal-light); font-size: 1.2rem; line-height: 0.85; }
+
+/* ── IMPACT ── */
+.impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.impact-text p { font-size: 0.975rem; line-height: 1.85; margin-bottom: 1.35rem; }
+.next-box { border: 1px solid var(--divider); padding: 2rem; background: var(--cream); }
+.next-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: var(--muted); margin-bottom: 1.25rem; }
+.nstep { display: flex; gap: 0.9rem; padding: 0.85rem 0; border-bottom: 1px solid var(--divider); }
+.nstep:last-child { border-bottom: none; padding-bottom: 0; }
+.ndot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 0.55rem; flex-shrink: 0; }
+.nstep p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); padding: 3.5rem 5rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.f-left {
+  color: rgba(244,239,230,0.3); font-family: 'DM Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; line-height: 2;
+}
+.f-right {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-style: italic; color: rgba(244,239,230,0.12);
+}
+
+@media print {
+  header { min-height: auto; page-break-after: always; }
+  section { page-break-inside: avoid; opacity: 1; transform: none; padding: 3rem 0; }
+  .finding-row { page-break-inside: avoid; }
+  .ba-pair { page-break-inside: avoid; }
+  .results-grid { page-break-inside: avoid; }
+  .site-strip { page-break-inside: avoid; }
+  .impact-grid { page-break-inside: avoid; }
+  .sec-body > div { page-break-inside: avoid; }
+  footer { page-break-inside: avoid; }
+}
+
+@media (max-width: 900px) {
+  header { grid-template-columns: 1fr; min-height: auto; }
+  .header-left { padding: 3rem 2rem; }
+  .header-right { padding: 3rem 2rem; min-height: 340px; }
+  .sec-head { grid-template-columns: 55px 1fr; gap: 1.25rem; }
+  .sec-n { font-size: 2.3rem; }
+  .sec-body { padding-left: calc(55px + 1.25rem); }
+  .site-strip, .finding-row, .results-grid, .ba-pair, .impact-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1.5rem; padding: 2.5rem 2rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header>
+  <div class="header-left">
+    <div class="nav-tag">UX Research · Case Study · November 2024</div>
+    <div>
+      <div class="eyebrow">Website Usability Evaluation</div>
+      <h1>YMCA of<br>Saginaw</h1>
+      <p class="byline">Laurie Williams &nbsp;·&nbsp; Isabella Maki &nbsp;·&nbsp; Bryonna Martin</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-item"><label>Role</label><span>UX Researcher</span></div>
+      <div class="meta-item"><label>Team</label><span>3 Researchers</span></div>
+      <div class="meta-item"><label>My Contributions</label><span>Study design · Moderated session facilitation · ASQ analysis · Final reporting</span></div>
+      <div class="meta-item"><label>Methods</label><span>Heuristic Eval · Cognitive Walkthrough · Moderated Testing</span></div>
+      <div class="meta-item"><label>Sessions</label><span>Zoom · Moderated · Oct 30 – Nov 2, 2024</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="big-Y">Y</div>
+    <div class="hero-overview">
+      <p class="overview-text">The YMCA of Saginaw website supports membership registration, class enrollment, and event sign-ups. We conducted mixed-methods usability research to identify where users failed and why — translating findings into targeted redesign recommendations.</p>
+      <div class="tag-list">
+        <span class="tag on">Heuristic Evaluation</span>
+        <span class="tag on">Moderated Testing</span>
+        <span class="tag on">Cognitive Walkthrough</span>
+        <span class="tag">ASQ Satisfaction</span>
+        <span class="tag">Think-Aloud Protocol</span>
+        <span class="tag">Pass / Fail Analysis</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="v">15</span><span class="l">Violations Found</span></div>
+      <div class="hstat"><span class="v">5</span><span class="l">Participants</span></div>
+      <div class="hstat"><span class="v">3</span><span class="l">Core Tasks</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 · THE SITE -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">01</div>
+    <div class="sec-t"><h2>The Site</h2><p>What the YMCA of Saginaw website looked like at time of testing</p></div>
+  </div>
+  <div class="sec-body">
+    <div class="site-strip">
+      <div class="site-img-wrap tall">
+        <img src="images/img_1.png" alt="YMCA homepage navigation">
+        <div class="caption">Homepage · Primary Navigation</div>
+      </div>
+      <div class="site-img-wrap">
+        <img src="images/img_2.png" alt="YMCA events page">
+        <div class="caption">Events Page</div>
+      </div>
+      <div class="site-img-wrap">
+        <img src="images/img_3.png" alt="YMCA program cards">
+        <div class="caption">Program Cards</div>
+      </div>
+      <div class="site-img-wrap">
+        <img src="images/img_4.png" alt="YMCA mission page">
+        <div class="caption">Mission Section</div>
+      </div>
+      <div class="site-img-wrap">
+        <img src="images/img_5.png" alt="YMCA schedule page">
+        <div class="caption">Schedule / Calendar View</div>
+      </div>
+    </div>
+    <p style="font-size:0.82rem; color:var(--muted); line-height:1.65;">The site supports membership registration, class enrollment, event sign-ups, schedule browsing, facility info, veteran services, and room reservations. Despite its breadth, the information architecture and navigation labeling created significant friction for first-time users attempting the three most common tasks.</p>
+  </div>
+</section>
+
+<!-- 02 · APPROACH -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">02</div>
+    <div class="sec-t"><h2>Research Approach</h2><p>Mixed-methods — quantitative metrics paired with qualitative observation</p></div>
+  </div>
+  <div class="sec-body">
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--divider); border:1px solid var(--divider); margin-bottom:2.5rem;">
+      <div style="background:var(--paper); padding:2rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;"><span style="display:inline-block;width:18px;height:1px;background:var(--teal);"></span>Method 01</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.75rem;">Heuristic Evaluation</h3>
+        <p style="font-size:0.8rem; color:var(--muted); line-height:1.6; margin-bottom:1.25rem;">Applied Nielsen Norman Group's 10 heuristics across 3–4 sessions. Documented each violation by severity and category.</p>
+        <div style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; color:var(--teal); line-height:1; margin-bottom:0.2rem;">15</div>
+        <div style="font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--muted); letter-spacing:0.05em; margin-bottom:1rem;">Violations Documented</div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+          <span style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.55rem; border:1px solid var(--divider); color:var(--muted); border-radius:2px;">System Status</span>
+          <span style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.55rem; border:1px solid var(--divider); color:var(--muted); border-radius:2px;">Consistency</span>
+          <span style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.55rem; border:1px solid var(--divider); color:var(--muted); border-radius:2px;">Real-World Match</span>
+          <span style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.55rem; border:1px solid var(--divider); color:var(--muted); border-radius:2px;">Aesthetic Design</span>
+        </div>
+      </div>
+      <div style="background:var(--paper); padding:2rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;"><span style="display:inline-block;width:18px;height:1px;background:var(--teal);"></span>Method 02</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.75rem;">Cognitive Walkthrough</h3>
+        <p style="font-size:0.8rem; color:var(--muted); line-height:1.6; margin-bottom:1.25rem;">Step-by-step task analysis using 4 key questions: visibility, recognition, expected effect, and feedback comprehension.</p>
+        <div style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; color:var(--teal); line-height:1; margin-bottom:0.2rem;">3</div>
+        <div style="font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--muted); letter-spacing:0.05em;">Task Flows Analyzed</div>
+      </div>
+      <div style="background:var(--paper); padding:2rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;"><span style="display:inline-block;width:18px;height:1px;background:var(--teal);"></span>Method 03</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.75rem;">Moderated Testing</h3>
+        <p style="font-size:0.8rem; color:var(--muted); line-height:1.6; margin-bottom:1.25rem;">Live Zoom sessions with rotating Facilitator / Evaluator / Observer roles. Pre- and post-test questionnaires + ASQ scores.</p>
+        <div style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; color:var(--teal); line-height:1; margin-bottom:0.2rem;">5</div>
+        <div style="font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--muted); letter-spacing:0.05em;">Participants · Ages 23–36</div>
+      </div>
+    </div>
+
+    <!-- Tasks -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--divider); border:1px solid var(--divider);">
+      <div style="background:var(--paper); padding:1.75rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Task 01</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:0.4rem;">Join as a Member</h3>
+        <p style="font-size:0.78rem; color:var(--muted); font-style:italic; line-height:1.5;">"You are not ready to pay — join with a free membership."</p>
+        <span class="badge fail" style="margin-top:0.85rem;">60% Success</span>
+      </div>
+      <div style="background:var(--paper); padding:1.75rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Task 02</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:0.4rem;">Register for a Class</h3>
+        <p style="font-size:0.78rem; color:var(--muted); font-style:italic; line-height:1.5;">"Sign up for any Duathlon on Dec 7th."</p>
+        <span class="badge fail" style="margin-top:0.85rem;">20% Success</span>
+      </div>
+      <div style="background:var(--paper); padding:1.75rem;">
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem;">Task 03</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:0.4rem;">Sign Up for an Event</h3>
+        <p style="font-size:0.78rem; color:var(--muted); font-style:italic; line-height:1.5;">"Sign up for the Christmas Work It! Dance Party."</p>
+        <span class="badge pass" style="margin-top:0.85rem;">100% Success</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · FINDINGS -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">03</div>
+    <div class="sec-t"><h2>Key Findings</h2><p>Three critical failure patterns across all methods</p></div>
+  </div>
+  <div class="sec-body">
+    <div class="findings-wrap">
+
+      <div class="finding-row">
+        <div class="f-label">
+          <span class="f-num"><span class="sdot"></span>Finding 01</span>
+          <div class="f-title">Navigation Labels Lack Clarity</div>
+        </div>
+        <div class="f-data">
+          <div class="f-metric">
+            <span class="mval">2/5</span>
+            <span class="mdesc">users failed Task 1's very first step — hovering "Cause Driven Membership"</span>
+          </div>
+          <ul class="bullets">
+            <li>4 of 5 rated Task 1 satisfaction at 4 or below (7-pt ASQ)</li>
+            <li>Users re-read the nav multiple times before locating "Join Now"</li>
+            <li>Header had double meaning — mission statement <em>and</em> membership entry</li>
+            <li>No breadcrumb or dead-end indicators — users felt "stuck in a loop"</li>
+          </ul>
+        </div>
+        <div class="f-evidence">
+          <img src="images/img_6.png" alt="Navigation bar screenshot" style="width:100%; border-radius:2px; margin-bottom:1rem; display:block; border:1px solid var(--divider);">
+          <div class="quote-block">
+            <p class="qt">It's confusing — I see nothing that quickly lets me purchase a membership.</p>
+            <p class="qa">— Participant 1 · Task 1</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="finding-row">
+        <div class="f-label">
+          <span class="f-num"><span class="sdot"></span>Finding 02</span>
+          <div class="f-title">Information Overload</div>
+        </div>
+        <div class="f-data">
+          <div class="f-metric">
+            <span class="mval">4/5</span>
+            <span class="mdesc">users rated overall site satisfaction below midpoint on post-test questionnaire</span>
+          </div>
+          <ul class="bullets">
+            <li>Free "Participant" tier buried at the bottom of a dense membership table</li>
+            <li>Event sign-up links rendered as tiny inline hyperlinks within text blocks</li>
+            <li>3 of 5 users missed the Sign Up link — it blended into surrounding content</li>
+            <li>Users called the site "unorganized" and "disjointed"</li>
+          </ul>
+        </div>
+        <div class="f-evidence">
+          <img src="images/img_7.png" alt="Membership table screenshot" style="width:100%; border-radius:2px; margin-bottom:1rem; display:block; border:1px solid var(--divider);">
+          <div class="quote-block">
+            <p class="qt">The sign-up link wasn't very clear — it just blended in with everything else.</p>
+            <p class="qa">— Participant 4 · Task 3</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="finding-row">
+        <div class="f-label">
+          <span class="f-num"><span class="sdot"></span>Finding 03</span>
+          <div class="f-title">No Search or Filtering</div>
+        </div>
+        <div class="f-data">
+          <div class="f-metric">
+            <span class="mval">2/5</span>
+            <span class="mdesc">users explicitly asked for a search feature during the events task</span>
+          </div>
+          <ul class="bullets">
+            <li>Events page: unstructured chronological text wall, manual scrolling required</li>
+            <li>No filter by category, date, or activity type</li>
+            <li>Cognitive walkthrough: Task 3 → unexpected login wall with no user feedback</li>
+            <li>Class categories misassigned — wrong classes in wrong sections</li>
+          </ul>
+        </div>
+        <div class="f-evidence">
+          <img src="images/img_8.png" alt="Events page screenshot" style="width:100%; border-radius:2px; margin-bottom:1rem; display:block; border:1px solid var(--divider);">
+          <div class="quote-block">
+            <p class="qt">I really wished there was a search function. I didn't like having to scroll — it was information overload.</p>
+            <p class="qa">— Participants 4 & 5 · Task 3</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 04 · RESULTS -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">04</div>
+    <div class="sec-t"><h2>Task Success Results</h2><p>Pass/fail outcomes across all three test scenarios</p></div>
+  </div>
+  <div class="sec-body">
+    <div class="results-grid">
+      <div class="res-card">
+        <div class="res-rate lo">60%</div>
+        <h3>Task 1 · Join as a Member</h3>
+        <p>3 of 5 passed. A 60% rate falls below the threshold needed to confirm usability — the task is at risk and requires intervention.</p>
+        <span class="badge fail">At Risk</span>
+      </div>
+      <div class="res-card">
+        <div class="res-rate lo">20%</div>
+        <h3>Task 2 · Register for a Class</h3>
+        <p>4 of 5 failed — multiple errors, incomplete steps, didn't finish in time. The class registration architecture needs a dedicated research sprint.</p>
+        <span class="badge fail">Unsuccessful</span>
+      </div>
+      <div class="res-card">
+        <div class="res-rate hi">100%</div>
+        <h3>Task 3 · Sign Up for an Event</h3>
+        <p>All 5 passed despite information density issues. The core path was navigable — confirming users were capable and the site's architecture was the problem.</p>
+        <span class="badge pass">Successful</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · REDESIGN -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">05</div>
+    <div class="sec-t"><h2>Redesign Direction</h2><p>Before / after — grounded in observed user behavior</p></div>
+  </div>
+  <div class="sec-body">
+
+    <div class="ba-pair">
+      <div class="ba-side">
+        <div class="ba-header"><span class="ba-badge b">Before</span><h3>Navigation: "Cause Driven Membership"</h3></div>
+        <img class="ba-img" src="images/img_9.png" alt="Before — navigation">
+        <div class="ba-body"><p>Internal branding language with no meaning for first-time users. 3 of 5 said this path was not where they expected to find membership sign-up.</p></div>
+      </div>
+      <div class="ba-side dark">
+        <div class="ba-header"><span class="ba-badge a">After</span><h3>Persistent "Join Now" CTA</h3></div>
+        <img class="ba-img" src="images/img_10.png" alt="After — navigation sketch" style="border-bottom:1px solid rgba(255,255,255,0.08); background:#fff;">
+        <div class="ba-body">
+          <ul class="ba-list">
+            <li>Rename to "Membership" or surface "Join Now" at top-level nav</li>
+            <li>Persistent high-contrast CTA visible at all scroll depths</li>
+            <li>Breadcrumbs added to prevent dead-end navigation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="ba-pair">
+      <div class="ba-side">
+        <div class="ba-header"><span class="ba-badge b">Before</span><h3>Events: Chronological Text Wall</h3></div>
+        <img class="ba-img" src="images/img_11.png" alt="Before — events page">
+        <div class="ba-body"><p>No search, no filters, sign-up links buried inline. 3 of 5 users missed the sign-up link entirely.</p></div>
+      </div>
+      <div class="ba-side dark">
+        <div class="ba-header"><span class="ba-badge a">After</span><h3>Calendar + Search + Prominent CTAs</h3></div>
+        <img class="ba-img" src="images/img_12.png" alt="After — events sketch" style="border-bottom:1px solid rgba(255,255,255,0.08); background:#fff;">
+        <div class="ba-body">
+          <ul class="ba-list">
+            <li>Keyword search bar at events page header</li>
+            <li>Monthly calendar grid view for date-based browsing</li>
+            <li>High-contrast Sign Up buttons — not inline text links</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="ba-pair">
+      <div class="ba-side">
+        <div class="ba-header"><span class="ba-badge b">Before</span><h3>Membership: Dense Flat Table</h3></div>
+        <img class="ba-img" src="images/img_13.png" alt="Before — membership table">
+        <div class="ba-body"><p>All tiers in one unsorted table. Free "Participant" option sat at the very bottom — most users never scrolled far enough to find it.</p></div>
+      </div>
+      <div class="ba-side dark">
+        <div class="ba-header"><span class="ba-badge a">After</span><h3>Grouped Tiers + Visual Hierarchy</h3></div>
+        <img class="ba-img" src="images/img_14.png" alt="After — membership sketch" style="border-bottom:1px solid rgba(255,255,255,0.08); background:#fff;">
+        <div class="ba-body">
+          <ul class="ba-list">
+            <li>Group tiers by audience: Adult · Youth · Young Adult · Free</li>
+            <li>Prominently feature the free "Participant" tier — don't bury it</li>
+            <li>Card layout with fee and rate immediately scannable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 06 · IMPACT -->
+<section>
+  <div class="sec-head">
+    <div class="sec-n">06</div>
+    <div class="sec-t"><h2>Impact & Takeaways</h2><p>What this project demonstrated about research-driven design</p></div>
+  </div>
+  <div class="sec-body">
+    <div class="impact-grid">
+      <div class="impact-text">
+        <p>This project reinforced that small labeling decisions compound into significant failure. "Cause Driven Membership" wasn't a minor wording choice — it caused 40% of participants to fail Task 1's first step. <em>Language is architecture.</em></p>
+        <p>For an organization dependent on memberships and donations, a 40% failure rate on the join flow represents direct revenue impact — not just a usability problem. Fixing the navigation label and surfacing a persistent CTA is a low-cost, high-impact intervention with measurable conversion implications.</p>
+        <p>By pairing quantitative outcomes (60% and 20% success rates, ASQ scores) with think-aloud observations, we could pinpoint not just <em>where</em> users failed, but <em>why</em> — enabling targeted recommendations over generic UX suggestions.</p>
+        <p>Task 3's 100% success despite information density issues was the project's most instructive finding: users were capable — the site's architecture was the problem, not the users.</p>
+      </div>
+      <div class="next-box">
+        <h3>If extended, next steps would include:</h3>
+        <div class="nstep"><div class="ndot"></div><p><strong>Tree testing</strong> to validate whether revised navigation labels genuinely match user expectations before implementation.</p></div>
+        <div class="nstep"><div class="ndot"></div><p><strong>A/B testing</strong> revised membership flows to measure the direct impact of CTA placement on free membership conversion.</p></div>
+        <div class="nstep"><div class="ndot"></div><p><strong>Dedicated research sprint</strong> — Task 2's 20% rate signals an architectural problem warranting its own focused research cycle.</p></div>
+        <div class="nstep"><div class="ndot"></div><p><strong>Post-launch analytics</strong> on event search queries and filter usage to refine discoverability over time.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="f-left">
+    YMCA of Saginaw · Website Usability Evaluation<br>
+    Laurie Williams · Isabella Maki · Bryonna Martin<br>
+    2024
+  </div>
+  <div class="f-right">Research-backed design.</div>
+</footer>
+
+<script>
+  // Scroll animations
+  const obs = new IntersectionObserver(e => e.forEach(e => e.isIntersecting && e.target.classList.add('visible')), {threshold:.07});
+  document.querySelectorAll('section').forEach(s => obs.observe(s));
+
+  // Tell Wix iFrame the full height of the page so it resizes correctly
+  function sendHeight() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'wix-iframe-height', height: height }, '*');
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+  // Also send after images load
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('load', sendHeight);
+  });
+</script>
+</body>
+</html>
